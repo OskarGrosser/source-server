@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Info-Bar for Streaming</title>
+
+    <script type="module">
+const time = document.getElementById("time");
+const title = document.getElementById("title");
+const tags = document.getElementById("tags");
+
+updateBar();
+setInterval(updateBar, 100);
+
+async function updateBar() {
+  const info = await fetch("/info.json").then(response => response.json());
+
+  time.textContent = time.datetime = info.datetime;
+  title.textContent = info.title;
+  tags.textContent = info.tags
+}
+    </script>
+    <style>
+html {
+  height: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  color: lightgray;
+  font-family: "Open Sans", Arial, sans-serif;
+  background-color: #445;
+}
+
+div {
+  padding-inline: .5rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+div:has(#time) {
+  border-inline-end: 2px solid lightgray;
+  background-color: #556;
+  font-family: "Roboto Mono", monospace;
+}
+#title {
+  text-overflow: ellipsis;
+}
+#tags {
+  float: inline-end;
+}
+    </style>
+  </head>
+  <body>
+    <div><span id="time"></span></div>
+    <div><span id="title"></span></div>
+    <div><span id="tags"></span></div>
+  </body>
+</html>
