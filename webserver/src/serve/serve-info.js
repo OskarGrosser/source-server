@@ -1,3 +1,6 @@
+import * as path from "https://deno.land/std@0.207.0/path/mod.ts";
+import { getDocRoot } from "../docroot.js";
+
 export function serveInfo(request, skip) {
   const url = new URL(request.url);
   if (url.pathname !== "/info.json") {
@@ -33,8 +36,7 @@ export function getInfo() {
   };
 
   return {
-    "datetime": getDateTimeUtc(),
-    "title": "PowerShell",
-    "tags": "Test, WIP"
+    datetime: getDateTimeUtc(),
+    items: JSON.parse(Deno.readTextFileSync(path.join(getDocRoot(), "../resources/items.json")))
   };
 }

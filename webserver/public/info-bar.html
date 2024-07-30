@@ -7,8 +7,7 @@
 
     <script type="module">
 const time = document.getElementById("time");
-const title = document.getElementById("title");
-const tags = document.getElementById("tags");
+const items = document.getElementById("items");
 
 updateBar();
 setInterval(updateBar, 100);
@@ -17,8 +16,18 @@ async function updateBar() {
   const info = await fetch("/info.json").then(response => response.json());
 
   time.textContent = time.datetime = info.datetime;
-  title.textContent = info.title;
-  tags.textContent = info.tags
+
+  const fragment = document.createDocumentFragment();
+  for (const group of info.items) {
+    const div = document.createElement("div");
+    for (const item of group) {
+      const span = document.createElement("span");
+      span.textContent = item;
+      div.append(span);
+    }
+    fragment.append(div);
+  }
+  items.replaceChildren(fragment);
 }
     </script>
     <style>
@@ -48,17 +57,10 @@ div:has(#time) {
   background-color: #556;
   font-family: "Roboto Mono", monospace;
 }
-#title {
-  text-overflow: ellipsis;
-}
-#tags {
-  float: inline-end;
-}
     </style>
   </head>
   <body>
     <div><span id="time"></span></div>
-    <div><span id="title"></span></div>
-    <div><span id="tags"></span></div>
+    <div id="items"></div>
   </body>
 </html>
