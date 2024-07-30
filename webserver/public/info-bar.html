@@ -7,8 +7,8 @@
 
     <script type="module">
 const time = document.getElementById("time");
-const body = document.getElementById("body");
-const footer = document.getElementById("footer");
+const main = document.querySelector("main");
+const footer = document.querySelector("footer");
 
 const reconnect = () => { itemConnection(null, reconnect); };
 itemConnection(null, reconnect);
@@ -34,14 +34,14 @@ function updateInfo(data) {
     time.textContent = time.datetime = data.datetime;
   }
 
-  if (data.body) {
+  if (data.main) {
     const fragment = document.createDocumentFragment();
-    for (const item of data.body) {
+    for (const item of data.main) {
       const span = document.createElement("span");
       span.textContent = item;
       fragment.append(span);
     }
-    body.replaceChildren(fragment);
+    main.replaceChildren(fragment);
   }
 
   if (data.footer) {
@@ -62,31 +62,47 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   color: lightgray;
   font-family: "Open Sans", Arial, sans-serif;
   background-color: #445;
 }
 
-div {
-  padding-inline: .5rem;
+header, main, footer {
+  flex-shrink: 0;
   display: flex;
-  align-items: center;
   white-space: nowrap;
   overflow: hidden;
 }
+span {
+  padding-inline: .5rem;
+  align-content: center;
+}
+span + span {
+  border-inline-start: 1px solid gray;
+}
 
-div:has(#time) {
+header {
   border-inline-end: 2px solid lightgray;
   background-color: #556;
   font-family: "Roboto Mono", monospace;
 }
+main {
+  flex: 1;
+}
+main span:last-child {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+footer:not(:empty) {
+  border-inline-start: 2px solid lightgray;
+  color: darkgray;
+}
     </style>
   </head>
   <body>
-    <div><span id="time"></span></div>
-    <div id="body"></div>
-    <div id="footer"></div>
+    <header><span id="time"></span></header>
+    <main></main>
+    <footer></footer>
   </body>
 </html>
