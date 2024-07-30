@@ -1,7 +1,7 @@
 import * as path from "https://deno.land/std@0.207.0/path/mod.ts";
 import { setDocRoot } from "./docroot.js";
-import { serveSimple } from "./serve/serve-simple.js";
-import { serveInfo } from "./serve/serve-info.js";
+import { serveSimple } from "./handler/serve-simple.js";
+import { serveInfo } from "./handler/serve-info.js";
 
 setDocRoot(path.join(
   path.dirname(path.fromFileUrl(import.meta.url)),
