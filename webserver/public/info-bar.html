@@ -9,13 +9,23 @@
 const time = document.getElementById("time");
 const items = document.getElementById("items");
 
-updateBar();
-setInterval(updateBar, 100);
+const reconnect = () => { itemConnection(null, reconnect); };
+itemConnection(null, reconnect);
 
-async function updateBar() {
-  const info = await fetch("/info.json").then(response => response.json());
+function itemConnection(onOpen, onClose) {
+  const socket = new WebSocket("ws://localhost:8080/info");
+  socket.addEventListener("open", () => {
+    console.log("Connection established");
+    onOpen?.();
+  });
+  socket.addEventListener("close", () => {
+    console.log("Connection lost");
+    onClose?.();
+  });
 
-  updateInfo(info);
+  socket.addEventListener("message", evt => {
+    updateInfo(JSON.parse(evt.data));
+  });
 }
 
 function updateInfo(data) {
@@ -25,7 +35,7 @@ function updateInfo(data) {
 
   if (data.items) {
     const fragment = document.createDocumentFragment();
-    for (const group of info.items) {
+    for (const group of data.items) {
       const div = document.createElement("div");
       for (const item of group) {
         const span = document.createElement("span");
