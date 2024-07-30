@@ -3,8 +3,16 @@ import { getDocRoot } from "./docroot.js";
 import getDateTimeUtc from "./get-datetime-utc.js";
 
 export default function getInfo() {
+  let info = {};
+  try {
+    const infoPath = path.join(getDocRoot(), "../resources/info.json");
+    info = JSON.parse(Deno.readTextFileSync(infoPath));
+  } catch (error) {
+    console.error("Could not get info: Unreadable info.json\n");
+  }
+
   return {
-    ...JSON.parse(Deno.readTextFileSync(path.join(getDocRoot(), "../resources/items.json"))),
+    ...info,
     datetime: getDateTimeUtc()
   };
 }
