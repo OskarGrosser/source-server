@@ -37,9 +37,11 @@ function updateInfo(data) {
   if (data.main) {
     const fragment = document.createDocumentFragment();
     for (const item of data.main) {
+      const div = document.createElement("div");
       const span = document.createElement("span");
       span.textContent = item;
-      fragment.append(span);
+      div.append(span);
+      fragment.append(div);
     }
     main.replaceChildren(fragment);
   }
@@ -47,9 +49,11 @@ function updateInfo(data) {
   if (data.footer) {
     const fragment = document.createDocumentFragment();
     for (const item of data.footer) {
+      const div = document.createElement("div");
       const span = document.createElement("span");
       span.textContent = item;
-      fragment.append(span);
+      div.append(span);
+      fragment.append(div);
     }
     footer.replaceChildren(fragment);
   }
@@ -74,29 +78,49 @@ header, main, footer {
   white-space: nowrap;
   overflow: hidden;
 }
-span {
+div {
   padding-inline: .5rem;
-  align-content: center;
-}
-span + span {
-  border-inline-start: 1px solid gray;
+  display: flex;
+  align-items: center;
 }
 
 header {
   border-inline-end: 2px solid lightgray;
+  padding-inline: .5rem;
+  display: grid;
+  place-items: center;
   background-color: #556;
   font-family: "Roboto Mono", monospace;
 }
+
 main {
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
-main span:last-child {
-  text-overflow: ellipsis;
+main div {
+  flex-shrink: 0;
+  padding-inline: .5rem;
+  display: flex;
+  align-items: center;
+}
+main div + div {
+  border-inline-start: 1px solid gray;
+}
+main div:last-child {
+  flex-shrink: 1;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+footer {
+  display: flex;
+  color: darkgray;
 }
 footer:not(:empty) {
-  border-inline-start: 2px solid lightgray;
-  color: darkgray;
+  border-inline-start: 2px solid gray;
+}
+footer div {
+  padding-inline: .5rem;
 }
     </style>
   </head>
