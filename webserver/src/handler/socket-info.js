@@ -16,20 +16,26 @@ export default function socketInfo(request, skip) {
   let intervalId;
   const watcher = Deno.watchFs(path.join(getDocRoot(), "../resources/"));
   const sendUpdate = debounce(() => {
-    socket.send(JSON.stringify(getInfo()));
+    try {
+      socket.send(JSON.stringify(getInfo()));
+    } catch {}
   }, 50);
 
   socket.addEventListener("open", async () => {
     console.log(`Client ${id} connected`);
 
     // Initialize
-    socket.send(JSON.stringify(getInfo()));
+    try {
+      socket.send(JSON.stringify(getInfo()));
+    } catch {}
 
     // Update
     intervalId = setInterval(() => {
-      socket.send(JSON.stringify({
-        datetime: getDateTimeUtc()
-      }));
+      try {
+        socket.send(JSON.stringify({
+          datetime: getDateTimeUtc()
+        }));
+      } catch {}
     }, 250);
     for await (const event of watcher) {
       if (event.kind !== "access") {
