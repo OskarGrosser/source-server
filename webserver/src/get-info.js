@@ -4,7 +4,7 @@ import getDateTimeUtc from "./get-datetime-utc.js";
 
 export default function getInfo() {
   return {
-    datetime: getDateTimeUtc(),
-    items: JSON.parse(Deno.readTextFileSync(path.join(getDocRoot(), "../resources/items.json")))
+    ...JSON.parse(Deno.readTextFileSync(path.join(getDocRoot(), "../resources/items.json"))),
+    datetime: getDateTimeUtc()
   };
 }

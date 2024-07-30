@@ -7,7 +7,8 @@
 
     <script type="module">
 const time = document.getElementById("time");
-const items = document.getElementById("items");
+const body = document.getElementById("body");
+const footer = document.getElementById("footer");
 
 const reconnect = () => { itemConnection(null, reconnect); };
 itemConnection(null, reconnect);
@@ -33,18 +34,24 @@ function updateInfo(data) {
     time.textContent = time.datetime = data.datetime;
   }
 
-  if (data.items) {
+  if (data.body) {
     const fragment = document.createDocumentFragment();
-    for (const group of data.items) {
-      const div = document.createElement("div");
-      for (const item of group) {
-        const span = document.createElement("span");
-        span.textContent = item;
-        div.append(span);
-      }
-      fragment.append(div);
+    for (const item of data.body) {
+      const span = document.createElement("span");
+      span.textContent = item;
+      fragment.append(span);
     }
-    items.replaceChildren(fragment);
+    body.replaceChildren(fragment);
+  }
+
+  if (data.footer) {
+    const fragment = document.createDocumentFragment();
+    for (const item of data.footer) {
+      const span = document.createElement("span");
+      span.textContent = item;
+      fragment.append(span);
+    }
+    footer.replaceChildren(fragment);
   }
 }
     </script>
@@ -79,6 +86,7 @@ div:has(#time) {
   </head>
   <body>
     <div><span id="time"></span></div>
-    <div id="items"></div>
+    <div id="body"></div>
+    <div id="footer"></div>
   </body>
 </html>
