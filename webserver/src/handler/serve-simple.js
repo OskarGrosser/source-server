@@ -2,7 +2,7 @@ import * as path from "https://deno.land/std@0.207.0/path/mod.ts";
 import * as extMime from "../extension-mimetype.js";
 import { getDocRoot } from "../docroot.js";
 
-export function serveSimple(request, skip) {
+export default function serveSimple(request, skip) {
   const url = new URL(request.url);
   const ext = /\.\w+$/.exec(url.pathname)?.[0].substring(1) ?? "";
 
