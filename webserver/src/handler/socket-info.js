@@ -6,7 +6,8 @@ import getInfo from "../get-info.js";
 
 let idCounter = 0;
 export default function socketInfo(request, skip) {
-  if (request.headers.get("upgrade") !== "websocket") {
+  const url = new URL(request.url);
+  if (url.pathname !== "/info" || request.headers.get("upgrade") !== "websocket") {
     return skip();
   }
 
